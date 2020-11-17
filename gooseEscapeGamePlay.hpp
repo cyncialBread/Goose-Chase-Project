@@ -65,5 +65,8 @@ void movePlayer(int key, Actor & player, int [NUM_BOARD_Y][NUM_BOARD_X]);
     add to the basic functionality to make it more fun to play?
 */
 
+bool win(Actor const & player, int [NUM_BOARD_Y][NUM_BOARD_X]);
+
+void moveMonster(int key, Actor & monster, int [NUM_BOARD_Y][NUM_BOARD_X]);
 
 #endif

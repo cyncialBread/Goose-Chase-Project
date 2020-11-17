@@ -91,7 +91,7 @@ int main()
     int keyEntered = TK_A;  // can be any valid value that is not ESCAPE or CLOSE
     
     while(keyEntered != TK_ESCAPE && keyEntered != TK_CLOSE 
-                    && !captured(player,monster)) //add has not won yet
+                    && !captured(player,monster) && !win(player,map)) //add has not won yet
 	{
 	    // get player key press
 	    keyEntered = terminal_read();

@@ -108,3 +108,22 @@ void movePlayer(int key, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD_X])
     What other functions do you need to make the game work?  What can you
     add to the basic functionality to make it more fun to play?
 */
+
+bool win(Actor const & player, int map[NUM_BOARD_Y][NUM_BOARD_X])
+{
+    int safetyzone_x = 0, safetyzone_y = 0;
+
+    for(int row = 0; row < NUM_BOARD_Y; row++)
+    {
+        for(int col = 0; col < NUM_BOARD_X; col++)
+        {
+            if (map[row][col] == WINNER)
+            {
+                safetyzone_x = row;
+                safetyzone_y = col;
+            }
+        }
+    }
+    return (player.get_x() == safetyzone_x
+         && player.get_y() == safetyzone_y);
+}
