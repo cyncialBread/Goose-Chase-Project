@@ -60,13 +60,6 @@ int main()
 		}
 		//cout << endl;
 	}
-	
-	
-    /* game map location */
-	map[20][17] = SHALL_NOT_PASS;
-	
-    /* game map location */ 
-	map[18][34]= WINNER;
   	
     // Call the function to print the game board
   	printBoard(map);
