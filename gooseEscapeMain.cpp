@@ -86,6 +86,8 @@ int main()
     All key presses start with "TK_" then the character.  So "TK_A" is the "a"
     key being pressed.
 */
+	monster.put_actor();
+	
     int keyEntered = TK_A;  // can be any valid value that is not ESCAPE or CLOSE
     
     while(keyEntered != TK_ESCAPE && keyEntered != TK_CLOSE 

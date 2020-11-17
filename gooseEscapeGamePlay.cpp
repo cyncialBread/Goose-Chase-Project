@@ -43,16 +43,16 @@ void printBoard(int map[NUM_BOARD_Y][NUM_BOARD_X])
 			{
 				output = EMPTY_CHAR;
 			}
-			else if(map[row][col] = SHALL_NOT_PASS)
+			else if(map[row][col] == SHALL_NOT_PASS)
 			{
 				output = WALL_CHAR;
 			}
-			else if(map[row][col] = WINNER)
+			else if(map[row][col] == WINNER)
 			{
 				output = WIN_CHAR;
 			}
 			
-			terminal_put(row,col,output);
+			terminal_put(col,row,output);
 			
 			//player.put_actor();
 			//monster.put_actor();
