@@ -28,9 +28,8 @@ const int WINNER = 2;
 const int PLAYER_CHAR = int('@');
 const int MONSTER_CHAR = int('G');
 const int WALL_CHAR = int('o');
-const int WIN_CHAR = int('%');
-const int EMPTY_CHAR = int(' '); //% sign, a special character used in the ancient game "Rogue"
-
+const int WIN_CHAR = int('%'); //% sign, a special character used in the ancient game "Rogue"
+const int EMPTY_CHAR = int(' ');
 /*
     Game play function prototypes are give below.
 */

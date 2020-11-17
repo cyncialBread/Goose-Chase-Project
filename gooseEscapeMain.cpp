@@ -35,8 +35,8 @@ int main()
 	Actor monster(MONSTER_CHAR, 70,20);
 	
     // Declare the array that will hold the game board "map"
-    
-    int map[NUM_BOARD_Y][NUM_BOARD_X] = {0};
+  	
+  	int map[NUM_BOARD_Y][NUM_BOARD_X] = {0};
   	
 /*
     Initiallize locations in the game board to have game features.  What if you
@@ -62,11 +62,14 @@ int main()
 	}
 	
 	
-    /* game map location */ //= SHALL_NOT_PASS;
-    /* game map location */ //= WINNER;
+    /* game map location */
+	map[20][17] = SHALL_NOT_PASS;
+	
+    /* game map location */ 
+	map[18][34]= WINNER;
   	
     // Call the function to print the game board
-    printBoard(map);
+  	printBoard(map);
   	
 	// Printing the instructions
     out.writeLine("Escape the Goose! " + monster.get_location_string());
@@ -86,7 +89,7 @@ int main()
     int keyEntered = TK_A;  // can be any valid value that is not ESCAPE or CLOSE
     
     while(keyEntered != TK_ESCAPE && keyEntered != TK_CLOSE 
-                    && !captured(player,monster))//add has not won yet
+                    && !captured(player,monster)) //add has not won yet
 	{
 	    // get player key press
 	    keyEntered = terminal_read();
