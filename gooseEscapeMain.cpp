@@ -56,9 +56,7 @@ int main()
 			fin >> tile;
 			
 			map[row][col] = tile;
-			//cout << tile;
 		}
-		//cout << endl;
 	}
   	
     // Call the function to print the game board
@@ -95,7 +93,7 @@ int main()
     	    movePlayer(keyEntered,player,map);
 
             // call the goose's chase function
-            
+            moveMonster(keyEntered, monster, map);
             // call other functions to do stuff?	    
         }
   	}

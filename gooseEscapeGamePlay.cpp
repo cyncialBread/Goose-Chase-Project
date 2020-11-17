@@ -121,9 +121,26 @@ bool win(Actor const & player, int map[NUM_BOARD_Y][NUM_BOARD_X])
             {
                 safetyzone_x = row;
                 safetyzone_y = col;
-            }
+            } 
         }
     }
-    return (player.get_x() == safetyzone_x
-         && player.get_y() == safetyzone_y);
+    return (player.get_x() == safetyzone_y
+         && player.get_y() == safetyzone_x);
+}
+
+void moveMonster(int key, Actor & monster, int map[NUM_BOARD_Y][NUM_BOARD_X])
+{
+	int yMove = 0, xMove = 0;
+    if (key == TK_UP)
+        yMove = 1;
+    else if (key == TK_DOWN)
+        yMove = -1;
+    else if (key == TK_LEFT)
+        xMove = 1;
+    else if (key == TK_RIGHT)
+        xMove = -1;
+        
+    if (monster.can_move(xMove, yMove) 
+      && map[monster.get_y()+yMove][monster.get_x()+xMove] != SHALL_NOT_PASS)
+        monster.update_location(xMove, yMove);
 }
