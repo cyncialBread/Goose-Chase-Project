@@ -67,6 +67,6 @@ void movePlayer(int key, Actor & player, int [NUM_BOARD_Y][NUM_BOARD_X]);
 
 bool win(Actor const & player, int [NUM_BOARD_Y][NUM_BOARD_X]);
 
-void moveMonster(int key, Actor & monster, int [NUM_BOARD_Y][NUM_BOARD_X]);
+void moveMonster(Actor & monster, Actor & player, int [NUM_BOARD_Y][NUM_BOARD_X]);
 
 #endif

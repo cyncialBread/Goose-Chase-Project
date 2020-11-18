@@ -35,7 +35,6 @@ int main()
 	Actor monster(MONSTER_CHAR, 70,20);
 	
     // Declare the array that will hold the game board "map"
-  	
   	int map[NUM_BOARD_Y][NUM_BOARD_X] = {0};
   	
 /*
@@ -77,7 +76,6 @@ int main()
     All key presses start with "TK_" then the character.  So "TK_A" is the "a"
     key being pressed.
 */
-	monster.put_actor();
 	
     int keyEntered = TK_A;  // can be any valid value that is not ESCAPE or CLOSE
     
@@ -93,8 +91,11 @@ int main()
     	    movePlayer(keyEntered,player,map);
 
             // call the goose's chase function
-            moveMonster(keyEntered, monster, map);
-            // call other functions to do stuff?	    
+            moveMonster(monster, player, map);
+            // call other functions to do stuff?
+			printBoard(map);
+			player.put_actor();
+			monster.put_actor();	    
         }
   	}
 

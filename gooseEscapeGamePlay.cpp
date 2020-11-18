@@ -53,10 +53,6 @@ void printBoard(int map[NUM_BOARD_Y][NUM_BOARD_X])
 			}
 			
 			terminal_put(col,row,output);
-			
-			//player.put_actor();
-			//monster.put_actor();
-			
 		}
 	}
 }
@@ -119,28 +115,29 @@ bool win(Actor const & player, int map[NUM_BOARD_Y][NUM_BOARD_X])
         {
             if (map[row][col] == WINNER)
             {
-                safetyzone_x = row;
-                safetyzone_y = col;
+                safetyzone_x = col;
+                safetyzone_y = row;
             } 
         }
     }
-    return (player.get_x() == safetyzone_y
-         && player.get_y() == safetyzone_x);
+    return (player.get_x() == safetyzone_x
+         && player.get_y() == safetyzone_y);
 }
 
-void moveMonster(int key, Actor & monster, int map[NUM_BOARD_Y][NUM_BOARD_X])
+void moveMonster(Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD_X])
 {
 	int yMove = 0, xMove = 0;
-    if (key == TK_UP)
-        yMove = 1;
-    else if (key == TK_DOWN)
-        yMove = -1;
-    else if (key == TK_LEFT)
+	
+    if (player.get_x() > monster.get_x())
         xMove = 1;
-    else if (key == TK_RIGHT)
+    else if (player.get_x() < monster.get_x())
         xMove = -1;
+    else if (player.get_y() > monster.get_y())
+        yMove = 1;
+    else if (player.get_y() < monster.get_y())
+        yMove = -1;
         
-    if (monster.can_move(xMove, yMove) 
-      && map[monster.get_y()+yMove][monster.get_x()+xMove] != SHALL_NOT_PASS)
+//    if (monster.can_move(xMove, yMove) 
+//      && map[monster.get_y()+yMove][monster.get_x()+xMove] != SHALL_NOT_PASS)
         monster.update_location(xMove, yMove);
 }
