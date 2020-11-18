@@ -132,12 +132,16 @@ void moveMonster(Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD
         xMove = 1;
     else if (player.get_x() < monster.get_x())
         xMove = -1;
-    else if (player.get_y() > monster.get_y())
+   
+    
+	else if (player.get_y() > monster.get_y())
         yMove = 1;
     else if (player.get_y() < monster.get_y())
         yMove = -1;
         
-//    if (monster.can_move(xMove, yMove) 
-//      && map[monster.get_y()+yMove][monster.get_x()+xMove] != SHALL_NOT_PASS)
-        monster.update_location(xMove, yMove);
+    if (monster.can_move(xMove, yMove))
+    {
+    	monster.update_location(xMove, yMove);
+	}
+        
 }

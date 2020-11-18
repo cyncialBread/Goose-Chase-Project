@@ -32,7 +32,7 @@ int main()
 	Actor player(PLAYER_CHAR, 10,10);  // you probably don't want to start in the same place each time
 	
 	//make the monster
-	Actor monster(MONSTER_CHAR, 70,20);
+	Actor monster(MONSTER_CHAR, 70,10);
 	
     // Declare the array that will hold the game board "map"
   	int map[NUM_BOARD_Y][NUM_BOARD_X] = {0};
@@ -93,6 +93,7 @@ int main()
             // call the goose's chase function
             moveMonster(monster, player, map);
             // call other functions to do stuff?
+			
 			printBoard(map);
 			player.put_actor();
 			monster.put_actor();	    
