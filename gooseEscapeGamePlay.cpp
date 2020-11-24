@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <fstream>
 using namespace std;
 #include <BearLibTerminal.h>
 #include "gooseEscapeUtil.hpp"
@@ -22,12 +23,6 @@ V
 y direction 
 */
 	
-/*
-    Print the game world
-    
-    The functions should draw characters to present features of the game
-    board, e.g. win location, obstacles, power ups
-*/
 
 // print the game board function
 void printBoard(int map[NUM_BOARD_Y][NUM_BOARD_X])
@@ -51,20 +46,20 @@ void printBoard(int map[NUM_BOARD_Y][NUM_BOARD_X])
 			{
 				output = WIN_CHAR;
 			}
+			else if(map[row][col] == DOOR_PREV)
+			{
+				output = DOOR_PREV_CHAR;	
+			}
+			else if(map[row][col] == DOOR_NEXT)
+			{
+				output = DOOR_NEXT_CHAR;	
+			}
 			
 			terminal_put(col,row,output);
 		}
 	}
 }
 
-/*
-    Do something when the goose captures the player
-    
-    If you want to attack or something else, this is the function you 
-    need to change.  For example, maybe the two touch each other and
-    then fight.  You could add a health to the Actor class that is
-    updated.  Run, use weapons, it's up to you!
-*/
 
 bool captured(Actor const & player, Actor const & monster)
 {
@@ -72,16 +67,6 @@ bool captured(Actor const & player, Actor const & monster)
          && player.get_y() == monster.get_y());
 }
 
-/*
-    Move the player to a new location based on the user input.  You may want
-    to modify this if there are extra controls you want to add.
-    
-    All key presses start with "TK_" then the character.  So "TK_A" is the a
-    key being pressed.
-    
-    A look-up table might be useful.
-    You could decide to learn about switch statements and use them here.
-*/
 
 void movePlayer(int key, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD_X])
 {
@@ -95,15 +80,53 @@ void movePlayer(int key, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD_X])
     else if (key == TK_RIGHT)
         xMove = 1;
         
-    if (player.can_move(xMove, yMove) 
+    if (player.can_move(xMove, yMove) //wall and boundry collision detection
       && map[player.get_y()+yMove][player.get_x()+xMove] != SHALL_NOT_PASS)
         player.update_location(xMove, yMove);
+
 }
 
-/*
-    What other functions do you need to make the game work?  What can you
-    add to the basic functionality to make it more fun to play?
-*/
+
+string doorDetection (Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD_X], string file)
+{
+	
+	ifstream fin(file.c_str());
+	
+	string filePrev = "";
+	string fileNext = "";
+	fin >> filePrev;
+	fin >> fileNext;
+	
+		
+	if(map[player.get_y()][player.get_x()] == DOOR_NEXT)
+    {
+		
+		cout << fileNext << endl; //debugging level name output
+		
+		
+    	levelLoad(map, fileNext);
+    
+    	player.set_location(10,10); //set player position for new level
+		monster.set_location(60,15); //set goose position for new level
+	
+		return fileNext;	//returns the current updated file name to update main loop
+	}
+	
+	else if(map[player.get_y()][player.get_x()] == DOOR_PREV)
+    {
+		
+		cout << filePrev << endl; //debugging level name output
+		
+		
+    	levelLoad(map, filePrev);
+    
+    	player.set_location(10,10); //set player position for new level
+		monster.set_location(60,15); //set goose position for new level
+	
+		return filePrev;	//returns the current updated file name to update main loop
+	}
+}
+
 
 bool win(Actor const & player, int map[NUM_BOARD_Y][NUM_BOARD_X])
 {
@@ -138,4 +161,32 @@ void moveMonster(Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD
         yMove = -1;
         
     monster.update_location(xMove, yMove);  
+}
+
+void levelLoad(int map[NUM_BOARD_Y][NUM_BOARD_X], string file)
+{
+	
+	string filePrev = "";
+	string fileNext = "";
+	
+	ifstream fin(file.c_str());
+	
+	fin >> filePrev;
+	fin >> fileNext;
+	
+	
+	terminal_clear_area(MIN_CONSOLE_X, MIN_CONSOLE_Y, NUM_CONSOLE_X, NUM_CONSOLE_Y);
+	
+	for(int row = 0; row < NUM_BOARD_Y; row++)
+	{
+		for(int col = 0; col < NUM_BOARD_X; col++)
+		{
+			int tile = 0;
+			fin >> tile;
+			
+			map[row][col] = tile;
+		}
+	}
+	
+	fin.close();
 }

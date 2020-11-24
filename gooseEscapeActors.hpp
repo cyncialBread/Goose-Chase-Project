@@ -50,6 +50,11 @@ class Actor
         return location_y;
     }
     
+    void set_location(int x0, int y0)
+    {
+    	location_x = x0;
+    	location_y = y0;
+	}
     string get_location_string() const
     {
         char buffer[80];
