@@ -22,22 +22,21 @@ class Actor
   private:
     int actorChar;      
     int location_x, location_y;
+    
     int powerUp;
     bool frozen;
     int turnsFrozen;
     
-
   public:
     Actor()
     {
         actorChar = int('A');
         location_x = MIN_SCREEN_X;
         location_y = MIN_SCREEN_Y;
-        powerUp = 0;
         
+		powerUp = 0;
 		frozen = false;
         turnsFrozen = 0;
-        
         
         put_actor();
     }
@@ -47,11 +46,11 @@ class Actor
         change_char(initPlayerChar);
         location_x = MIN_SCREEN_X;
         location_y = MIN_SCREEN_Y;
-        // havePowerUp(map[location_x][location_y], const POWER_UP)
-  		powerUp = 0;
-        
+    
+		powerUp = 0;
 		frozen = false;
         turnsFrozen = 0;
+        
         update_location(x0,y0);
     }
     
@@ -69,16 +68,28 @@ class Actor
     {
     	return powerUp;
 	}
+	
+	bool is_frozen()
+	{
+		return frozen;
+	}
+	
     void set_location(int x0, int y0)
     {
     	location_x = x0;
     	location_y = y0;
 	}
+
+	void set_powerup(int powerUp0)
+    {
+		powerUp = powerUp0;
+	}
 	
-	void set_frozen(bool state)
+	void set_frozen(int state)
 	{
 		frozen = state;
 	}
+	
     string get_location_string() const
     {
         char buffer[80];
@@ -95,21 +106,14 @@ class Actor
     }
 
     bool can_move(int delta_x, int delta_y) const
-    {
-        
+    { 
 		int new_x = location_x + delta_x;
     	int new_y = location_y + delta_y;
 
     	return new_x >= MIN_BOARD_X && new_x <= MAX_BOARD_X
-      	&& new_y >= MIN_BOARD_Y && new_y <= MAX_BOARD_Y;
-		
+      	&& new_y >= MIN_BOARD_Y && new_y <= MAX_BOARD_Y;	
     }
-
-	bool is_frozen()
-	{
-		return frozen;
-	}
-	
+    	
     void update_location(int delta_x, int delta_y)
     {
         if (can_move(delta_x, delta_y))
@@ -126,35 +130,26 @@ class Actor
         terminal_put(location_x, location_y, actorChar);
         terminal_refresh();
     }
-    
-    
-	
-	void set_powerup()
-    {
-    	
-		powerUp = 1;
-	}
 
-   void unfreeze_cycle()
+	void usePowerUp(Actor & otherActor)
+	{
+		if ((*this).powerUp == 1)
+		{
+			otherActor.set_frozen(true);
+			(*this).powerUp = 0;
+		}	
+	}
+	
+	void unfreeze_cycle()
    {
 	   	turnsFrozen++;
 	   	
-	   	if(turnsFrozen == 5)
+		if(turnsFrozen == 5)
 	   	{
-	   		frozen = false;	
+	   		set_frozen(false);
+			turnsFrozen = 0;	
 		}	 
    }
-   
-	void usePowerUp(Actor & otherActor)
-	{
-	
-		if ((*this).powerUp == 1)
-		{
-			
-			otherActor.set_frozen(true);
-			(*this).powerUp = 0;
-		}
-	}
     
 };
 #endif

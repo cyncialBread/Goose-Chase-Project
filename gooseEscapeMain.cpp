@@ -19,7 +19,7 @@ int main()
     terminal_open();
   	terminal_set(SETUP_MESSAGE);
 
- 	//generate levels random levels - modify NUM_LEVELS to adjust complexity
+ 	//generate random levels - modify NUM_LEVELS to adjust complexity
  	generateLevels(NUM_LEVELS);
  	
     //make the player
@@ -31,14 +31,12 @@ int main()
     // Declare the array that will hold the game board "map"
   	int map[NUM_BOARD_Y][NUM_BOARD_X] = {0};
   	
-
 	//first level
 	string level = "level0.txt";
 	
 	//load first level
 	levelLoad(map, level);
 
-  	
     // Call the function to print the game board
   	printBoard(map);
   	
@@ -47,32 +45,29 @@ int main()
 	out.writeLine("Use the arrow keys to move");
 	out.writeLine("If the goose catches you, you lose!");
 	out.writeLine("Be careful! Sometimes the goose can jump through walls!");
+	out.writeLine("Press the spacebar to activate the powerUp (*)");
 
-
-	
     int keyEntered = TK_A;  // can be any valid value that is not ESCAPE or CLOSE
-    
     
 	//MAIN LOOP
     while(keyEntered != TK_ESCAPE && keyEntered != TK_CLOSE 
-        	&& !captured(player,monster) && !win(player,map)) //add has not won yet
+        	&& !captured(player,monster) && !win(player,map)) 
 	{
 	    // get player key press
 	    keyEntered = terminal_read();
 
         if (keyEntered != TK_ESCAPE && keyEntered != TK_CLOSE)
         {
-        	
         	if(map[player.get_y()][player.get_x()] == POWER_UP)
             {
-            	player.set_powerup();
-            	map[player.get_y()][player.get_x()] = EMPTY;
-            	
+            	player.set_powerup(1);
+            	map[player.get_y()][player.get_x()] = EMPTY;	
 			}
             
 			if(keyEntered == TK_SPACE)
 			{
 				player.usePowerUp(monster);
+				monster.unfreeze_cycle();
 			}
 			
             //player movement
@@ -85,7 +80,6 @@ int main()
     		{
     			level = doorDetection(monster, player, map, level);
     			printBoard(map);
-    			
 			}
             
 			printBoard(map);
@@ -93,7 +87,6 @@ int main()
 			monster.put_actor();	    
         }
   	}
-	
 	
     if (keyEntered != TK_CLOSE)
     {
@@ -114,7 +107,6 @@ int main()
         while (terminal_read() != TK_CLOSE);
     }
 
-	
 	//game is done, close it  
     terminal_close();
 }

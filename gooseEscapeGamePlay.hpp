@@ -23,11 +23,11 @@ const int DOOR_NEXT = 3;
 const int DOOR_PREV = 4;
 const int POWER_UP = 5;
 
-
 /*
     A few examples of characters both for actors and for the game board
     itself are shown.
 */	
+
 //display characters
 const int PLAYER_CHAR = int('@');
 const int MONSTER_CHAR = int('G');
@@ -37,6 +37,7 @@ const int EMPTY_CHAR = int(' ');
 const int DOOR_NEXT_CHAR = int('>');
 const int DOOR_PREV_CHAR = int('<');
 const int POWER_UP_CHAR = int('*');
+
 /*
     Game play function prototypes are give below.
 */
@@ -78,7 +79,6 @@ void moveMonster(Actor & monster, Actor & player, int [NUM_BOARD_Y][NUM_BOARD_X]
 void levelLoad(int [NUM_BOARD_Y][NUM_BOARD_X], string);
 
 string doorDetection (Actor & monster, Actor & player, int [NUM_BOARD_Y][NUM_BOARD_X], string);
-
 
 void generateLevels(int);
 

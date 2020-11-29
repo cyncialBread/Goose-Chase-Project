@@ -63,22 +63,16 @@ void printBoard(int map[NUM_BOARD_Y][NUM_BOARD_X])
 				output = POWER_UP_CHAR;
 			}
 			
-			
-			
 			terminal_put(col,row,output);
-		}
-		
-		
+		}	
 	}
 }
-
 
 bool captured(Actor const & player, Actor const & monster)
 {
     return (player.get_x() == monster.get_x() 
          && player.get_y() == monster.get_y());
 }
-
 
 void movePlayer(int key, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD_X])
 {
@@ -95,13 +89,10 @@ void movePlayer(int key, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD_X])
     if (player.can_move(xMove, yMove) //wall and boundry collision detection
       && map[player.get_y()+yMove][player.get_x()+xMove] != SHALL_NOT_PASS)
         player.update_location(xMove, yMove);
-
 }
-
 
 string doorDetection (Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD_X], string file)
 {
-	
 	ifstream fin(file.c_str());
 	
 	string filePrev = "";
@@ -111,11 +102,9 @@ string doorDetection (Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_
 	
 	int doorX = 0;
 	int doorY = 0;
-	
-				
+					
 	if(map[player.get_y()][player.get_x()] == DOOR_NEXT)
     {
-		
 		cout << fileNext << endl; //debugging level name output
 		
     	levelLoad(map, fileNext);
@@ -128,10 +117,8 @@ string doorDetection (Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_
 	
 	else if(map[player.get_y()][player.get_x()] == DOOR_PREV)
     {
-		
 		cout << filePrev << endl; //debugging level name output
 		
-
     	levelLoad(map, filePrev);
     
     	player.set_location(MAX_BOARD_X-2,10); //set player position for new level
@@ -140,7 +127,6 @@ string doorDetection (Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_
 		return filePrev;	//returns the current updated file name to update main loop
 	}
 }
-
 
 bool win(Actor const & player, int map[NUM_BOARD_Y][NUM_BOARD_X])
 {
@@ -195,8 +181,7 @@ void levelLoad(int map[NUM_BOARD_Y][NUM_BOARD_X], string file)
 	
 	fin >> filePrev;
 	fin >> fileNext;
-	
-	
+		
 	terminal_clear_area(MIN_CONSOLE_X, MIN_CONSOLE_Y, NUM_CONSOLE_X, NUM_CONSOLE_Y);
 	
 	for(int row = 0; row < NUM_BOARD_Y; row++)	//load into map array
@@ -206,9 +191,7 @@ void levelLoad(int map[NUM_BOARD_Y][NUM_BOARD_X], string file)
 			int tile = 0;
 			fin >> tile;
 			
-			map[row][col] = tile;
-			
-			
+			map[row][col] = tile;		
 		}
 	}
 	
@@ -217,7 +200,6 @@ void levelLoad(int map[NUM_BOARD_Y][NUM_BOARD_X], string file)
 
 void generateLevels(int maxRooms)
 {
-
 	srand(time(NULL));	//random seed generation
 	
 	int winRoom = 0;	//room and location for final win space %
@@ -225,10 +207,8 @@ void generateLevels(int maxRooms)
 	int winRoomX = (MIN_BOARD_X+1) + rand() % (MAX_BOARD_X) - (MIN_BOARD_X +1);
 	int winRoomY= (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y) - (MIN_BOARD_Y +1);
 	
-
 	for(int index = 0; index < maxRooms; index++)
 	{
-		
 		stringstream ss;
 		ss << index;
 		string fileName = "level" + ss.str() +".txt";	//iterative file name string
@@ -240,10 +220,7 @@ void generateLevels(int maxRooms)
 		int doorPrevY = (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y) - (MIN_BOARD_Y +1);	//door locations
 		int doorNextY = (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y) - (MIN_BOARD_Y +1);
 		
-		
 		int tempLevel [NUM_BOARD_Y][NUM_BOARD_X] = {0};	//temporary level array - needed for adding random walls
-		
-		
 		
 		
 		for(int row = 0; row < NUM_BOARD_Y; row++)
@@ -251,14 +228,11 @@ void generateLevels(int maxRooms)
 			int wallPosX = (MIN_BOARD_X+1) + rand() % (MAX_BOARD_X) - (MIN_BOARD_X +1);	//wall object x-position
 			
 			for(int col = 0; col < NUM_BOARD_X; col++)
-			{
-				
-				
+			{	
 				if(row == MIN_BOARD_Y || row == MAX_BOARD_Y || col == MIN_BOARD_X || col == MAX_BOARD_X)  //border walls
 				{
 					tempLevel[row][col] = 1;
 				}
-				
 				else if (index == winRoom && row == winRoomY && col == winRoomX)	//win space
 				{
 					tempLevel[row][col] = 2;
@@ -269,7 +243,6 @@ void generateLevels(int maxRooms)
 				}
 				else if(col == wallPosX) //random walls
 				{
-					
 					int wallType =  rand() % (4);
 					int size = 1;
 					
@@ -284,7 +257,6 @@ void generateLevels(int maxRooms)
 						{
 							tempLevel[row+index][col] = 1;
 						}
-						
 					}
 					else if(wallType == 1)	//horizontal line
 					{
