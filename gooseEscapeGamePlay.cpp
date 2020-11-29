@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <fstream>
+#include <cstdlib>
 using namespace std;
 #include <BearLibTerminal.h>
 #include "gooseEscapeUtil.hpp"
@@ -54,6 +55,10 @@ void printBoard(int map[NUM_BOARD_Y][NUM_BOARD_X])
 			{
 				output = DOOR_NEXT_CHAR;	
 			}
+			else if(map[row][col] == POWER_UP)
+			{
+				output = POWER_UP_CHAR;
+			}
 			
 			terminal_put(col,row,output);
 		}
@@ -96,7 +101,6 @@ string doorDetection (Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_
 	string fileNext = "";
 	fin >> filePrev;
 	fin >> fileNext;
-	
 		
 	if(map[player.get_y()][player.get_x()] == DOOR_NEXT)
     {
@@ -190,3 +194,6 @@ void levelLoad(int map[NUM_BOARD_Y][NUM_BOARD_X], string file)
 	
 	fin.close();
 }
+
+
+
