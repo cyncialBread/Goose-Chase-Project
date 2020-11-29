@@ -102,26 +102,19 @@ class Actor
         terminal_refresh();
     }
     
-    //Function to know whether the actor has or not powerUp 
-    bool havePowerUp(int map[NUM_BOARD_Y][NUM_BOARD_X], int const POWER_UP)
-	{
-		if(map[location_x][location_y] == POWER_UP)
-		{
-			terminal_clear_area(location_x, location_y, 1, 1); // Make * dissappear once it is overlapped
-			return 1;
-		}
-		return 0;
+    void set_powerup()
+    {
+    	powerUp = 1;
 	}
+
    
-	void usePowerUp(Actor const && otherActor, int delta_x, int delta_y) const
+	void usePowerUp(Actor & otherActor)
 	{
-		if (havePowerUp())
+		if ((*this).powerUp == 1)
 		{
-			while (delta_x + delta_y == 3)
-			{
-				otherActor.x  
-				otherActor.y
-			}
+			cout << "POWER UP USED";
+			otherActor.update_location(otherActor.location_x-2,otherActor.loaction_y-2);
+			(*this).powerUp = 0;
 		}
 	}
     

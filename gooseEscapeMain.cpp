@@ -59,7 +59,20 @@ int main()
 
         if (keyEntered != TK_ESCAPE && keyEntered != TK_CLOSE)
         {
-            //player movement
+            if(map[player.get_y()][player.get_x()] == POWER_UP)
+            {
+            	player.set_powerup();
+            	map[player.get_y()][player.get_x()] = EMPTY;
+            	cout << map[player.get_y()][player.get_x()];
+            	
+			}
+            
+			if(keyEntered == TK_SPACE)
+			{
+				player.usePowerUp(monster);
+				monster.put_actor();
+			}
+			//player movement
     	    movePlayer(keyEntered, player, map);
     	    
     	    //goose chase movemenet
@@ -71,6 +84,7 @@ int main()
     			printBoard(map);
     			
 			}
+			
           
 			printBoard(map);
 			player.put_actor();
@@ -83,7 +97,7 @@ int main()
 //  	{
 //  				
 //	}
-	
+okay, so when the player overlaps	
 	
 		
     if (keyEntered != TK_CLOSE)

@@ -80,4 +80,6 @@ void levelLoad(int [NUM_BOARD_Y][NUM_BOARD_X], string);
 
 string doorDetection (Actor & monster, Actor & player, int [NUM_BOARD_Y][NUM_BOARD_X], string);
 
+
+
 #endif
