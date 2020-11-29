@@ -97,7 +97,7 @@ int main()
 //  	{
 //  				
 //	}
-okay, so when the player overlaps	
+
 	
 		
     if (keyEntered != TK_CLOSE)
