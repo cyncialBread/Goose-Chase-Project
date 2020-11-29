@@ -2,6 +2,8 @@
 #include <cmath>
 #include <fstream>
 #include <cstdlib>
+#include <ctime>
+#include <string>
 using namespace std;
 #include <BearLibTerminal.h>
 #include "gooseEscapeUtil.hpp"
@@ -26,6 +28,7 @@ y direction
 	
 
 // print the game board function
+
 void printBoard(int map[NUM_BOARD_Y][NUM_BOARD_X])
 {
 	for(int row = 0; row < NUM_BOARD_Y; row++)
@@ -60,8 +63,12 @@ void printBoard(int map[NUM_BOARD_Y][NUM_BOARD_X])
 				output = POWER_UP_CHAR;
 			}
 			
+			
+			
 			terminal_put(col,row,output);
 		}
+		
+		
 	}
 }
 
@@ -101,16 +108,19 @@ string doorDetection (Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_
 	string fileNext = "";
 	fin >> filePrev;
 	fin >> fileNext;
-		
+	
+	int doorX = 0;
+	int doorY = 0;
+	
+				
 	if(map[player.get_y()][player.get_x()] == DOOR_NEXT)
     {
 		
 		cout << fileNext << endl; //debugging level name output
 		
-		
     	levelLoad(map, fileNext);
-    
-    	player.set_location(10,10); //set player position for new level
+    	
+    	player.set_location(MIN_BOARD_X+2, 10); //set player position for new level
 		monster.set_location(60,15); //set goose position for new level
 	
 		return fileNext;	//returns the current updated file name to update main loop
@@ -121,10 +131,10 @@ string doorDetection (Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_
 		
 		cout << filePrev << endl; //debugging level name output
 		
-		
+
     	levelLoad(map, filePrev);
     
-    	player.set_location(10,10); //set player position for new level
+    	player.set_location(MAX_BOARD_X-2,10); //set player position for new level
 		monster.set_location(60,15); //set goose position for new level
 	
 		return filePrev;	//returns the current updated file name to update main loop
@@ -163,9 +173,8 @@ void moveMonster(Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD
         yMove = 1;
     else if (player.get_y() < monster.get_y())
         yMove = -1;
-    
-    
-	if(!monster.is_frozen())
+        
+    if(!monster.is_frozen())
 	{
 		monster.update_location(xMove, yMove);  
 	}   
@@ -173,12 +182,12 @@ void moveMonster(Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD
 	{
 		monster.unfreeze_cycle();	
 	} 
-    
 }
 
+//loads next room when door collision occurs
 void levelLoad(int map[NUM_BOARD_Y][NUM_BOARD_X], string file)
 {
-	
+	//temporary file read in variables (necessary to read tile data into array)
 	string filePrev = "";
 	string fileNext = "";
 	
@@ -190,7 +199,7 @@ void levelLoad(int map[NUM_BOARD_Y][NUM_BOARD_X], string file)
 	
 	terminal_clear_area(MIN_CONSOLE_X, MIN_CONSOLE_Y, NUM_CONSOLE_X, NUM_CONSOLE_Y);
 	
-	for(int row = 0; row < NUM_BOARD_Y; row++)
+	for(int row = 0; row < NUM_BOARD_Y; row++)	//load into map array
 	{
 		for(int col = 0; col < NUM_BOARD_X; col++)
 		{
@@ -198,11 +207,130 @@ void levelLoad(int map[NUM_BOARD_Y][NUM_BOARD_X], string file)
 			fin >> tile;
 			
 			map[row][col] = tile;
+			
+			
 		}
 	}
 	
 	fin.close();
 }
 
+void generateLevels(int maxRooms)
+{
 
+	srand(time(NULL));	//random seed generation
+	
+	int winRoom = 0;	//room and location for final win space %
+	winRoom = rand() % (maxRooms +1);
+	int winRoomX = (MIN_BOARD_X+1) + rand() % (MAX_BOARD_X) - (MIN_BOARD_X +1);
+	int winRoomY= (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y) - (MIN_BOARD_Y +1);
+	
 
+	for(int index = 0; index < maxRooms; index++)
+	{
+		
+		stringstream ss;
+		ss << index;
+		string fileName = "level" + ss.str() +".txt";	//iterative file name string
+		
+		ofstream fout(fileName.c_str());	//initializing file
+		
+		fout << "level" << index-1 << ".txt" << endl << "level" << index+1 << ".txt" << endl;	//outputting to txt file prev and next file names
+		
+		int doorPrevY = (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y) - (MIN_BOARD_Y +1);	//door locations
+		int doorNextY = (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y) - (MIN_BOARD_Y +1);
+		
+		
+		int tempLevel [NUM_BOARD_Y][NUM_BOARD_X] = {0};	//temporary level array - needed for adding random walls
+		
+		
+		
+		
+		for(int row = 0; row < NUM_BOARD_Y; row++)
+		{
+			int wallPosX = (MIN_BOARD_X+1) + rand() % (MAX_BOARD_X) - (MIN_BOARD_X +1);	//wall object x-position
+			
+			for(int col = 0; col < NUM_BOARD_X; col++)
+			{
+				
+				
+				if(row == MIN_BOARD_Y || row == MAX_BOARD_Y || col == MIN_BOARD_X || col == MAX_BOARD_X)  //border walls
+				{
+					tempLevel[row][col] = 1;
+				}
+				
+				else if (index == winRoom && row == winRoomY && col == winRoomX)	//win space
+				{
+					tempLevel[row][col] = 2;
+				}
+				else if (rand() % (SEED_PROBABILITY) == 5)	//random powerup placement
+				{
+					tempLevel[row][col] = 5;
+				}
+				else if(col == wallPosX) //random walls
+				{
+					
+					int wallType =  rand() % (4);
+					int size = 1;
+					
+					if(wallType == 0)	//cross
+					{
+						for(int index = -size; index<=size; index++)
+						{
+							tempLevel[row][col+index] = 1;
+						}
+						
+						for(int index = -size; index<=size; index++)
+						{
+							tempLevel[row+index][col] = 1;
+						}
+						
+					}
+					else if(wallType == 1)	//horizontal line
+					{
+						for(int index = -size; index<=size; index++)
+						{
+							tempLevel[row][col+index] = 1;
+						}
+					}
+					else if(wallType == 2)	//2x2 square
+					{
+						tempLevel[row][col] = 1;
+						tempLevel[row][col-1] = 1;
+						tempLevel[row-1][col] = 1;
+						tempLevel[row-1][col-1] = 1;
+					}
+					else if (wallType == 3)	//vertical line
+					{
+						for(int index = -size; index<=size; index++)
+						{
+							tempLevel[row+index][col] = 1;
+						}
+					}
+				}
+				
+				//doors are seperate to ensure they are spawned properly
+				if(col==MIN_BOARD_X+1 && row == doorPrevY && index != 0) //door to previous room
+				{
+					tempLevel[row][col] = 4;
+				}
+				if(col==MAX_BOARD_X-1 && row == doorNextY) //door to next room
+				{
+					tempLevel[row][col] = 3;
+				}
+			}
+		}
+	
+		for(int row = 0; row < NUM_BOARD_Y; row++)	//file writing
+		{
+		
+			for(int col = 0; col < NUM_BOARD_X; col++)
+			{
+				fout << tempLevel[row][col] << ' ';
+			}
+			fout << endl;
+		}
+		
+		fout.close();
+	}	
+}

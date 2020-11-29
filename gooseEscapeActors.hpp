@@ -127,9 +127,12 @@ class Actor
         terminal_refresh();
     }
     
-    void set_powerup()
+    
+	
+	void set_powerup()
     {
-    	powerUp = 1;
+    	
+		powerUp = 1;
 	}
 
    void unfreeze_cycle()
@@ -144,8 +147,10 @@ class Actor
    
 	void usePowerUp(Actor & otherActor)
 	{
+	
 		if ((*this).powerUp == 1)
 		{
+			
 			otherActor.set_frozen(true);
 			(*this).powerUp = 0;
 		}

@@ -19,12 +19,14 @@ int main()
     terminal_open();
   	terminal_set(SETUP_MESSAGE);
 
+ 	//generate levels random levels - modify NUM_LEVELS to adjust complexity
+ 	generateLevels(NUM_LEVELS);
  	
     //make the player
-	Actor player(PLAYER_CHAR, 10,10,0);  // you probably don't want to start in the same place each time
+	Actor player(PLAYER_CHAR, 5,5,0);  // you probably don't want to start in the same place each time
 	
 	//make the monster
-	Actor monster(MONSTER_CHAR, 70,19,0);
+	Actor monster(MONSTER_CHAR, 70,12,0);
 	
     // Declare the array that will hold the game board "map"
   	int map[NUM_BOARD_Y][NUM_BOARD_X] = {0};
@@ -36,6 +38,7 @@ int main()
 	//load first level
 	levelLoad(map, level);
 
+  	
     // Call the function to print the game board
   	printBoard(map);
   	
@@ -59,7 +62,8 @@ int main()
 
         if (keyEntered != TK_ESCAPE && keyEntered != TK_CLOSE)
         {
-            if(map[player.get_y()][player.get_x()] == POWER_UP)
+        	
+        	if(map[player.get_y()][player.get_x()] == POWER_UP)
             {
             	player.set_powerup();
             	map[player.get_y()][player.get_x()] = EMPTY;
@@ -70,34 +74,27 @@ int main()
 			{
 				player.usePowerUp(monster);
 			}
-			//player movement
+			
+            //player movement
     	    movePlayer(keyEntered, player, map);
     	    
     	    //goose chase movemenet
 			moveMonster(monster, player, map);
 			
-			if(map[player.get_y()][player.get_x()] == DOOR_PREV || map[player.get_y()][player.get_x()] == DOOR_NEXT )
+			if(map[player.get_y()][player.get_x()] == DOOR_PREV || map[player.get_y()][player.get_x()] == DOOR_NEXT)
     		{
     			level = doorDetection(monster, player, map, level);
     			printBoard(map);
     			
 			}
-			
-          
+            
 			printBoard(map);
 			player.put_actor();
 			monster.put_actor();	    
         }
   	}
-  	
-//  	//If A is pressed, @ can use the power up, which is Goose food that may appear in any location.
-//  	if (catchPowerUp() && keyEntered == TK_A)
-//  	{
-//  				
-//	}
-
 	
-		
+	
     if (keyEntered != TK_CLOSE)
     {
       	//once we're out of the loop, the game is over
@@ -117,6 +114,7 @@ int main()
         while (terminal_read() != TK_CLOSE);
     }
 
+	
 	//game is done, close it  
     terminal_close();
 }

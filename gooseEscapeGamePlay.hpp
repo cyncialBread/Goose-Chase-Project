@@ -23,6 +23,7 @@ const int DOOR_NEXT = 3;
 const int DOOR_PREV = 4;
 const int POWER_UP = 5;
 
+
 /*
     A few examples of characters both for actors and for the game board
     itself are shown.
@@ -74,12 +75,11 @@ bool win(Actor const & player, int [NUM_BOARD_Y][NUM_BOARD_X]);
 
 void moveMonster(Actor & monster, Actor & player, int [NUM_BOARD_Y][NUM_BOARD_X]);
 
-//Functions added to improve the game Week 2
-
 void levelLoad(int [NUM_BOARD_Y][NUM_BOARD_X], string);
 
 string doorDetection (Actor & monster, Actor & player, int [NUM_BOARD_Y][NUM_BOARD_X], string);
 
 
+void generateLevels(int);
 
 #endif
