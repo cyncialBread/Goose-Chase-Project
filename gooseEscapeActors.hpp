@@ -113,7 +113,7 @@ class Actor
 		if ((*this).powerUp == 1)
 		{
 			cout << "POWER UP USED";
-			otherActor.update_location(otherActor.location_x-2,otherActor.loaction_y-2);
+			otherActor.update_location(otherActor.location_x-2,otherActor.location_y-2);
 			(*this).powerUp = 0;
 		}
 	}
