@@ -23,6 +23,9 @@ class Actor
     int actorChar;      
     int location_x, location_y;
     int powerUp;
+    bool frozen;
+    int turnsFrozen;
+    
 
   public:
     Actor()
@@ -31,6 +34,10 @@ class Actor
         location_x = MIN_SCREEN_X;
         location_y = MIN_SCREEN_Y;
         powerUp = 0;
+        
+		frozen = false;
+        turnsFrozen = 0;
+        
         
         put_actor();
     }
@@ -41,7 +48,10 @@ class Actor
         location_x = MIN_SCREEN_X;
         location_y = MIN_SCREEN_Y;
         // havePowerUp(map[location_x][location_y], const POWER_UP)
-  
+  		powerUp = 0;
+        
+		frozen = false;
+        turnsFrozen = 0;
         update_location(x0,y0);
     }
     
@@ -55,12 +65,20 @@ class Actor
         return location_y;
     }
     
+    int get_powerUp() const
+    {
+    	return powerUp;
+	}
     void set_location(int x0, int y0)
     {
     	location_x = x0;
     	location_y = y0;
 	}
 	
+	void set_frozen(bool state)
+	{
+		frozen = state;
+	}
     string get_location_string() const
     {
         char buffer[80];
@@ -78,13 +96,20 @@ class Actor
 
     bool can_move(int delta_x, int delta_y) const
     {
-        int new_x = location_x + delta_x;
-        int new_y = location_y + delta_y;
+        
+		int new_x = location_x + delta_x;
+    	int new_y = location_y + delta_y;
 
-        return new_x >= MIN_BOARD_X && new_x <= MAX_BOARD_X
-          && new_y >= MIN_BOARD_Y && new_y <= MAX_BOARD_Y;
+    	return new_x >= MIN_BOARD_X && new_x <= MAX_BOARD_X
+      	&& new_y >= MIN_BOARD_Y && new_y <= MAX_BOARD_Y;
+		
     }
 
+	bool is_frozen()
+	{
+		return frozen;
+	}
+	
     void update_location(int delta_x, int delta_y)
     {
         if (can_move(delta_x, delta_y))
@@ -107,13 +132,21 @@ class Actor
     	powerUp = 1;
 	}
 
+   void unfreeze_cycle()
+   {
+	   	turnsFrozen++;
+	   	
+	   	if(turnsFrozen == 5)
+	   	{
+	   		frozen = false;	
+		}	 
+   }
    
 	void usePowerUp(Actor & otherActor)
 	{
 		if ((*this).powerUp == 1)
 		{
-			cout << "POWER UP USED";
-			otherActor.update_location(otherActor.location_x-2,otherActor.location_y-2);
+			otherActor.set_frozen(true);
 			(*this).powerUp = 0;
 		}
 	}

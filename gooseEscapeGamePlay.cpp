@@ -163,8 +163,17 @@ void moveMonster(Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD
         yMove = 1;
     else if (player.get_y() < monster.get_y())
         yMove = -1;
-        
-    monster.update_location(xMove, yMove);  
+    
+    
+	if(!monster.is_frozen())
+	{
+		monster.update_location(xMove, yMove);  
+	}   
+	else
+	{
+		monster.unfreeze_cycle();	
+	} 
+    
 }
 
 void levelLoad(int map[NUM_BOARD_Y][NUM_BOARD_X], string file)

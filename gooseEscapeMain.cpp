@@ -63,14 +63,12 @@ int main()
             {
             	player.set_powerup();
             	map[player.get_y()][player.get_x()] = EMPTY;
-            	cout << map[player.get_y()][player.get_x()];
             	
 			}
             
 			if(keyEntered == TK_SPACE)
 			{
 				player.usePowerUp(monster);
-				monster.put_actor();
 			}
 			//player movement
     	    movePlayer(keyEntered, player, map);
