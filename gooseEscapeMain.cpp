@@ -58,6 +58,7 @@ int main()
 
         if (keyEntered != TK_ESCAPE && keyEntered != TK_CLOSE)
         {
+        	//powerup detection
         	if(map[player.get_y()][player.get_x()] == POWER_UP)
             {
             	
@@ -65,6 +66,7 @@ int main()
             	map[player.get_y()][player.get_x()] = EMPTY;	
 			}
             
+            //powerup activation
 			if(keyEntered == TK_SPACE)
 			{
 				player.usePowerUp(monster);
@@ -77,12 +79,14 @@ int main()
     	    //goose chase movemenet
 			moveMonster(monster, player, map);
 			
+			//loading next/previous level
 			if(map[player.get_y()][player.get_x()] == DOOR_PREV || map[player.get_y()][player.get_x()] == DOOR_NEXT)
     		{
     			level = doorDetection(monster, player, map, level);
     			printBoard(map);
 			}
             
+            //plotting tiles and sprites
 			printBoard(map);
 			player.put_actor();
 			monster.put_actor();	    

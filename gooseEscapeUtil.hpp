@@ -45,4 +45,7 @@ const int MAX_CONSOLE_Y = MAX_SCREEN_Y;
 const int NUM_LEVELS = 5;	//number of rooms
 const int SEED_PROBABILITY = 300; // 1/n chance of a seed spawning at a location
 
+const int NUM_WALL_TYPES = 4;	// number of different wall shapes
+const int WALL_SCALE = 1;	//scale of wall shapes
+
 #endif

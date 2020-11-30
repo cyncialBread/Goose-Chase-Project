@@ -12,11 +12,6 @@
     Feel free to add additional Classes to your program.
 */
 
-/* 
-    Going further:  Learn the other syntax for implementing a class that is
-    more appropriate for working with multiple files, and improve the class code.
-*/
-
 class Actor
 {
   private:

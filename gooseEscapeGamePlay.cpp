@@ -35,7 +35,7 @@ void printBoard(int map[NUM_BOARD_Y][NUM_BOARD_X])
 	{
 		for(int col = 0; col < NUM_BOARD_X; col++)
 		{
-			
+			//outputting different tiles
 			char output = ' ';
 			
 			if(map[row][col] == EMPTY)
@@ -95,7 +95,7 @@ string doorDetection (Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_
 {
 	ifstream fin(file.c_str());
 	
-	string filePrev = "";
+	string filePrev = "";	//reading file names, needed to read data below them in file
 	string fileNext = "";
 	fin >> filePrev;
 	fin >> fileNext;
@@ -159,7 +159,7 @@ void moveMonster(Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_BOARD
     else if (player.get_y() < monster.get_y())
         yMove = -1;
         
-    if(!monster.is_frozen())
+    if(!monster.is_frozen())	//freezing the goose if powerup is active
 	{
 		monster.update_location(xMove, yMove);  
 	}   
@@ -198,18 +198,19 @@ void levelLoad(int map[NUM_BOARD_Y][NUM_BOARD_X], string file)
 
 void generateLevels(int maxRooms)
 {
-	srand(time(NULL));	//random seed generation
+	srand(time(NULL));	//seed for random intiializtion
 	
 	int winRoom = 0;	//room and location for final win space %
-	winRoom = rand() % (maxRooms);
-	int winRoomX = (MIN_BOARD_X+1) + rand() % (MAX_BOARD_X-1);;
-	int winRoomY= (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y-1);;
 	
+	winRoom = rand() % (maxRooms);
+	int winRoomX = (MIN_BOARD_X+1) + rand() % (MAX_BOARD_X-1);
+	int winRoomY= (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y-1);
+
 	for(int index = 0; index < maxRooms; index++)
 	{
 		stringstream ss;
 		ss << index;
-		string fileName = "level" + ss.str() +".txt";	//iterative file name string
+		string fileName = "level" + ss.str() +".txt";	//iterative file name string (i.e "leve0.txt")
 		
 		ofstream fout(fileName.c_str());	//initializing file
 		
@@ -227,24 +228,27 @@ void generateLevels(int maxRooms)
 			
 			for(int col = 0; col < NUM_BOARD_X; col++)
 			{	
-				if(row == MIN_BOARD_Y || row == MAX_BOARD_Y || col == MIN_BOARD_X || col == MAX_BOARD_X)  //border walls
+				if(row == MIN_BOARD_Y || row == MAX_BOARD_Y || col == MIN_BOARD_X || col == MAX_BOARD_X) //spawning border walls
 				{
 					tempLevel[row][col] = 1;
 				}
-				else if (index == winRoom && row == winRoomY && col == winRoomX)	//win space
+				else if (index == winRoom && row == winRoomY && col == winRoomX) //spawning win space
 				{
 					tempLevel[row][col] = 2;
 				}
-				else if (rand() % (SEED_PROBABILITY) == 5)	//random powerup placement
+				else if (rand() % (SEED_PROBABILITY) == 5) //spawning random powerups (seeds)
 				{
 					tempLevel[row][col] = 5;
 				}
-				else if(col == wallPosX) //random walls
+				else if(col == wallPosX) //spawning random walls
 				{
-					int wallType =  rand() % (4);
-					int size = 1;
 					
-					if(wallType == 0)	//cross
+					
+					
+					int wallType =  rand() % (NUM_WALL_TYPES); //4 different wall t
+					int size = WALL_SCALE;
+					
+					if(wallType == 0)	//cross (+)
 					{
 						for(int index = -size; index<=size; index++)
 						{
@@ -256,7 +260,7 @@ void generateLevels(int maxRooms)
 							tempLevel[row+index][col] = 1;
 						}
 					}
-					else if(wallType == 1)	//horizontal line
+					else if(wallType == 1)	//horizontal line (-)
 					{
 						for(int index = -size; index<=size; index++)
 						{
@@ -270,7 +274,7 @@ void generateLevels(int maxRooms)
 						tempLevel[row-1][col] = 1;
 						tempLevel[row-1][col-1] = 1;
 					}
-					else if (wallType == 3)	//vertical line
+					else if (wallType == 3)	//vertical line	(|)
 					{
 						for(int index = -size; index<=size; index++)
 						{
@@ -284,7 +288,7 @@ void generateLevels(int maxRooms)
 				{
 					tempLevel[row][col] = 4;
 				}
-				if(col==MAX_BOARD_X-1 && row == doorNextY && index != (maxRooms-1)) //door to next room
+				else if(col==MAX_BOARD_X-1 && row == doorNextY && index != (maxRooms-1)) //door to next room
 				{
 					tempLevel[row][col] = 3;
 				}
