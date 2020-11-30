@@ -105,24 +105,23 @@ string doorDetection (Actor & monster, Actor & player, int map[NUM_BOARD_Y][NUM_
 					
 	if(map[player.get_y()][player.get_x()] == DOOR_NEXT)
     {
-		cout << fileNext << endl; //debugging level name output
 		
     	levelLoad(map, fileNext);
     	
     	player.set_location(MIN_BOARD_X+2, 10); //set player position for new level
-		monster.set_location(60,15); //set goose position for new level
+		monster.set_location((MIN_BOARD_X+1) + rand() % (MAX_BOARD_X-1),(MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y-1));
 	
 		return fileNext;	//returns the current updated file name to update main loop
 	}
 	
 	else if(map[player.get_y()][player.get_x()] == DOOR_PREV)
     {
-		cout << filePrev << endl; //debugging level name output
 		
     	levelLoad(map, filePrev);
-    
+    	
+    	
     	player.set_location(MAX_BOARD_X-2,10); //set player position for new level
-		monster.set_location(60,15); //set goose position for new level
+		monster.set_location((MIN_BOARD_X+1) + rand() % (MAX_BOARD_X-1),(MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y-1));
 	
 		return filePrev;	//returns the current updated file name to update main loop
 	}
@@ -182,7 +181,6 @@ void levelLoad(int map[NUM_BOARD_Y][NUM_BOARD_X], string file)
 	fin >> filePrev;
 	fin >> fileNext;
 		
-	terminal_clear_area(MIN_CONSOLE_X, MIN_CONSOLE_Y, NUM_CONSOLE_X, NUM_CONSOLE_Y);
 	
 	for(int row = 0; row < NUM_BOARD_Y; row++)	//load into map array
 	{
@@ -203,9 +201,9 @@ void generateLevels(int maxRooms)
 	srand(time(NULL));	//random seed generation
 	
 	int winRoom = 0;	//room and location for final win space %
-	winRoom = rand() % (maxRooms +1);
-	int winRoomX = (MIN_BOARD_X+1) + rand() % (MAX_BOARD_X) - (MIN_BOARD_X +1);
-	int winRoomY= (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y) - (MIN_BOARD_Y +1);
+	winRoom = rand() % (maxRooms);
+	int winRoomX = (MIN_BOARD_X+1) + rand() % (MAX_BOARD_X-1);;
+	int winRoomY= (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y-1);;
 	
 	for(int index = 0; index < maxRooms; index++)
 	{
@@ -217,8 +215,8 @@ void generateLevels(int maxRooms)
 		
 		fout << "level" << index-1 << ".txt" << endl << "level" << index+1 << ".txt" << endl;	//outputting to txt file prev and next file names
 		
-		int doorPrevY = (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y) - (MIN_BOARD_Y +1);	//door locations
-		int doorNextY = (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y) - (MIN_BOARD_Y +1);
+		int doorPrevY = (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y-1);	//door locations
+		int doorNextY = (MIN_BOARD_Y+1) + rand() % (MAX_BOARD_Y-1);
 		
 		int tempLevel [NUM_BOARD_Y][NUM_BOARD_X] = {0};	//temporary level array - needed for adding random walls
 		
@@ -286,7 +284,7 @@ void generateLevels(int maxRooms)
 				{
 					tempLevel[row][col] = 4;
 				}
-				if(col==MAX_BOARD_X-1 && row == doorNextY) //door to next room
+				if(col==MAX_BOARD_X-1 && row == doorNextY && index != (maxRooms-1)) //door to next room
 				{
 					tempLevel[row][col] = 3;
 				}

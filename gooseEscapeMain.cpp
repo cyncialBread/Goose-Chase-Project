@@ -41,11 +41,11 @@ int main()
   	printBoard(map);
   	
 	// Printing the instructions
-    out.writeLine("Escape the Goose! " + monster.get_location_string());
-	out.writeLine("Use the arrow keys to move");
-	out.writeLine("If the goose catches you, you lose!");
-	out.writeLine("Be careful! Sometimes the goose can jump through walls!");
-	out.writeLine("Press the spacebar to activate the powerUp (*)");
+    //out.writeLine("Escape the Goose! " + monster.get_location_string());
+	out.writeLine("Use the arrow keys to move and find the safety zone (%)");
+	out.writeLine("If the goose catches you, you lose! (G)");
+	out.writeLine("Enter different rooms (<) and (>)");
+	out.writeLine("Collect seeds (*) Press the spacebar to activate the powerup!");
 
     int keyEntered = TK_A;  // can be any valid value that is not ESCAPE or CLOSE
     
@@ -60,7 +60,8 @@ int main()
         {
         	if(map[player.get_y()][player.get_x()] == POWER_UP)
             {
-            	player.set_powerup(1);
+            	
+				player.set_powerup(1);
             	map[player.get_y()][player.get_x()] = EMPTY;	
 			}
             
@@ -90,6 +91,7 @@ int main()
 	
     if (keyEntered != TK_CLOSE)
     {
+    	
       	//once we're out of the loop, the game is over
         out.writeLine("Game has ended");
     
